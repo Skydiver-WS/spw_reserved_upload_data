@@ -46,6 +46,8 @@ public class UploadServiceImpl implements UploadService {
     public void uploadRoom() {
         List<Object> rooms = objectMapper.readValue(new File("src/main/resources/upload-data/hotel_rooms.json"),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
+        log.info("Rooms: {}", rooms.size());
+        Thread.sleep(5000);
         rooms.forEach(r -> {
             restService.rest("http://localhost:8082/api/v1/room", r);
         });
