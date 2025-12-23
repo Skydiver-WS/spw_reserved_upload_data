@@ -28,7 +28,6 @@ public class UploadServiceImpl implements UploadService {
     private final RestService restService;
 
 
-
     @Override
     @SneakyThrows
     public void uploadHotel() {
@@ -52,5 +51,20 @@ public class UploadServiceImpl implements UploadService {
             restService.rest("http://localhost:8082/api/v1/room", r);
         });
 
+    }
+
+    @Override
+    @SneakyThrows
+    public void uploadUsers() {
+        List<Object> users = objectMapper.readValue(new File("src/main/resources/upload-data/users_1000.json"),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
+        users.forEach(u -> {
+            try {
+                restService.rest("http://localhost:8082/api/v1/user/create", u);
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }
