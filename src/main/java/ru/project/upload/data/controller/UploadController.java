@@ -26,5 +26,11 @@ public class UploadController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<Void> uploadUsers(){
+        uploadService.uploadUsers();
+        return ResponseEntity.ok().build();
+    }
+
 
 }

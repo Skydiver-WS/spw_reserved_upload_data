@@ -1,22 +1,15 @@
+server:
+  port: 8080
 spring:
-  kafka:
-    bootstrap-servers: 127.0.0.1:9093,192.168.31.230:9093 # ??????? ????? ?????? ??????? Kafka
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      topic:
-        kafkaMessageGroupId: "data-base"
+  ssl.bundle.pem:
+    client:
+      truststore:
+        certificate: classpath:cert/keystore.pem
 
-
-
-    consumer:
-      group-id: data-base # ?????? ????????????
-      auto-offset-reset: earliest # ???????? ? ?????? ??????? ????????, ???? ???????? ?? ???????
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      topic:
-        topicList:
-
-          - create-hotel
-          - create-room
+app:
+  ssl:
+    client:
+      p12:
+        path: classpath:cert/keystore.p12
+        password: "123456"
 

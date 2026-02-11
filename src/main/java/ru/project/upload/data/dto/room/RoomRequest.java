@@ -25,6 +25,7 @@ public class RoomRequest {
     private Long numberApart;
 
     private String description;
+    private Double coast;
 
     private StatusType statusType;
 

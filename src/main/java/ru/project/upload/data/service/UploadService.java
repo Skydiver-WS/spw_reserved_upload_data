@@ -4,4 +4,6 @@ public interface UploadService {
     void uploadHotel();
 
     void uploadRoom();
+
+    void uploadUsers();
 }

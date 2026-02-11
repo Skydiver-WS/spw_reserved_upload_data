@@ -5,17 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import ru.project.upload.data.dto.hotel.HotelRequest;
+import ru.project.upload.data.dto.hotel.HotelRq;
+import ru.project.upload.data.dto.user.UserRs;
 import ru.project.upload.data.service.RestService;
+import ru.project.upload.data.service.UploadHotelService;
+import ru.project.upload.data.service.UploadRooms;
 import ru.project.upload.data.service.UploadService;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,31 +25,40 @@ public class UploadServiceImpl implements UploadService {
 
     private final ObjectMapper objectMapper;
     private final RestService restService;
+    private final UploadHotelService hotelService;
+    private final UploadRooms uploadRooms;
 
+    public final static List<UserRs> respUsersList = new ArrayList<>();
 
 
     @Override
     @SneakyThrows
     public void uploadHotel() {
-        List<HotelRequest> hotels = objectMapper.readValue(new File("src/main/resources/upload-data/hotels-v4.json"),
-                objectMapper.getTypeFactory().constructCollectionType(List.class, HotelRequest.class));
+        hotelService.uploadHotels();
 
-        hotels.forEach(h -> {
-            restService.rest("http://localhost:8082/api/v1/hotel", h);
-        });
 
     }
 
     @Override
     @SneakyThrows
     public void uploadRoom() {
-        List<Object> rooms = objectMapper.readValue(new File("src/main/resources/upload-data/hotel_rooms.json"),
-                objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
-        log.info("Rooms: {}", rooms.size());
-        Thread.sleep(5000);
-        rooms.forEach(r -> {
-            restService.rest("http://localhost:8082/api/v1/room", r);
-        });
+        uploadRooms.uploadRoom();
 
+
+    }
+
+    @Override
+    @SneakyThrows
+    public void uploadUsers() {
+        List<Object> users = objectMapper.readValue(new File("src/main/resources/upload-data/users_1000.json"),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
+        users.forEach(u -> {
+            try {
+                restService.rest("https://localhost:8443/api/v1/user/create", u);
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class Photo {
 
-    private Long id;
+    private String id;
 
     private String photo;
 
