@@ -54,12 +54,27 @@ public class UploadServiceImpl implements UploadService {
                 objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
         users.forEach(u -> {
             try {
-                restService.rest("https://localhost:8443/api/v1/user/create", u);
+                restService.rest("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/user/create", u);
                 Thread.sleep(300);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         });
 
+    }
+
+    @Override
+    @SneakyThrows
+    public void uploadTunnelUser() {
+        List<Object> users = objectMapper.readValue(new File("src/main/resources/upload-data/generated_users_5000.json"),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, Object.class));
+        users.forEach(u -> {
+            try {
+                restService.rest("http://localhost:8080/tunnel-manager/api/v1/user", u);
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

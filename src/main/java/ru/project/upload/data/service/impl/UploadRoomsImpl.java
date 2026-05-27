@@ -42,10 +42,10 @@ public class UploadRoomsImpl implements UploadRooms {
         log.info("Start");
         List<HotelResponse> hotels = new ArrayList<>();
         int page = 0;
-        int size = 500;
+        int size = 50;
         while (true) {
             List<HotelResponse> hotelsRs = restService
-                    .getAllHotel("https://localhost:8443/api/v1/hotel" +
+                    .getAllHotel("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/hotel" +
                             "?page=" + page +
                             "&size=" + size).getHotels();
             hotels.addAll(hotelsRs);
@@ -60,7 +60,7 @@ public class UploadRoomsImpl implements UploadRooms {
             //Получаем владельца отеля, что бы взять токен авторизации
             log.info("Get manager hotel {}", h);
             Optional<UserRs> userRsOptional = respUsersList.stream()
-                    .filter(u -> restService.checkDeniedUser("http://localhost:8081/booking-app/api/v1/hotel/check-denied",
+                    .filter(u -> restService.checkDeniedUser("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/hotel",
                             HotelRq.builder()
                                     .id(h.getId())
                                     .userRq(HotelRq.UserRq.builder()
@@ -73,13 +73,11 @@ public class UploadRoomsImpl implements UploadRooms {
                 List<RoomRequest> roomsHotel = roomsMap.get(h.getId());
                 //Загружаем комнаты
                 roomsHotel.forEach(r -> {
-                    try {
+
                         log.info("Upload room");
-                        restService.restUpload("https://localhost:8443/api/v1/room", r, userRs.getToken());
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        restService.restUpload("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/room", r, userRs.getToken());
+//                        Thread.sleep(50);
+
                 });
             }
         });

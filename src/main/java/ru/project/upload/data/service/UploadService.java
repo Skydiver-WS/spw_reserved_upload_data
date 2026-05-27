@@ -6,4 +6,6 @@ public interface UploadService {
     void uploadRoom();
 
     void uploadUsers();
+
+    void uploadTunnelUser();
 }

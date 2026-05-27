@@ -79,11 +79,17 @@ public class RestServiceImpl implements RestService {
 
     @Override
     public boolean checkDeniedUser(String url, Object body) {
-        return Boolean.TRUE.equals(restClient.post()
-                .uri(url)
-                .body(body)
-                .retrieve()
-                .body(Boolean.class));
+        try {
+            return Boolean.TRUE.equals(restClient.post()
+                    .uri(url)
+                    .body(body)
+                    .retrieve()
+                    .body(Boolean.class));
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return false;
+        }
+
     }
 
 

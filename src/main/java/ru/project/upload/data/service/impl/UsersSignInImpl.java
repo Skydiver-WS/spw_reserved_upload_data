@@ -41,7 +41,7 @@ public class UsersSignInImpl implements UsersSignIn {
     @Override
     public void signInUsers(List<UserRs> users) {
         users.forEach(u -> {
-            ResponseEntity<UserRs> rs = restService.restSignIn("https://localhost:8443/api/v1/user/sing-in", UserRqDb.builder()
+            ResponseEntity<UserRs> rs = restService.restSignIn("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/user/sing-in", UserRqDb.builder()
                     .username(u.getUsername())
                     .password(u.getPassword())
                     .build());

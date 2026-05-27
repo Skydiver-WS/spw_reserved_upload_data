@@ -55,7 +55,7 @@ public class UploadHotelImpl implements UploadHotelService {
                     .userId(user.getUserId())
                     .build()));
 
-            restService.restUpload("https://localhost:8443/api/v1/hotel", h, user.getToken());
+            restService.restUpload("http://rest-app-route-hotel-apps.apps-crc.testing/api/v1/hotel", h, user.getToken());
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {

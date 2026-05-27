@@ -32,5 +32,11 @@ public class UploadController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/tunnel/user")
+    public ResponseEntity<Void> uploadTunnelUser(){
+        uploadService.uploadTunnelUser();
+        return ResponseEntity.ok().build();
+    }
+
 
 }
